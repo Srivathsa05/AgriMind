@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "./NavBar";
+import { NavBar } from "./NavBar";
 
 const Layout = () => {
   return (
     <div>
-      <Navbar />
+      <NavBar />
       <main>
         {/* The Outlet component renders the current page (e.g., Index, CropRecommender) */}
         <Outlet />

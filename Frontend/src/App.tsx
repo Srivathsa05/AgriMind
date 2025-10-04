@@ -12,7 +12,6 @@ import WeatherPage from "./pages/WeatherPage";
 import SettingsPage from "./pages/SettingsPage";     // 1. Import the new SettingsPage
 
 import { AuthProvider } from "./contexts/AuthContext";
-import AppRoutes from "./AppRoutes"; // We'll create this component next
 
 const queryClient = new QueryClient();
 
@@ -22,23 +21,19 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          {/* This Layout component now contains your Navbar and wraps all pages */}
-          <Route path="/" element={<Layout />}>
-            {/* The `index` route is your homepage */}
-            <Route index element={<Index />} />
-            <Route path="crop-recommender" element={<CropRecommender />} />
-            
-            {/* Enabled the route for your WeatherPage */}
-            <Route path="weather" element={<WeatherPage />} />
-            
-            {/* 2. Added the route for your new SettingsPage */}
-            <Route path="settings" element={<SettingsPage />} />
-
-            {/* This is the catch-all route for pages that don't exist */}
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            {/* This Layout component now contains your Navbar and wraps all pages */}
+            <Route path="/" element={<Layout />}>
+              {/* The `index` route is your homepage */}
+              <Route index element={<Index />} />
+              <Route path="crop-recommender" element={<CropRecommender />} />
+              <Route path="weather" element={<WeatherPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
