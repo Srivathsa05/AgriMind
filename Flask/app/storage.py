@@ -7,43 +7,39 @@ ML_PATH = os.path.join(BASE_DIR, "ml")
 sys.path.append(ML_PATH)
 
 try:
-    from predict import predict_top_crops_from_features
+    from ml.crop_recommender.predict import predict_top_crops_from_features
 except Exception as e:
     print(f"Failed to import ML functions: {e}")
     predict_top_crops_from_features = None
 
-def dummy_crop_recommendation(soil_type: str, weather: str) -> str:
-    """Simple placeholder recommender to keep the API working without ML.
-    Returns a crop name based on basic heuristics.
-    """
-    soil = (soil_type or '').lower()
-    w = (weather or '').lower()
-    if 'loam' in soil and 'moderate' in w:
-        return 'Wheat'
-    if 'clay' in soil and 'rain' in w:
-        return 'Rice'
-    if 'sandy' in soil:
-        return 'Millet'
-    return 'Maize'
 
-def predict_crop(features):
+def predict_crop(features: dict):
     """
     features: dict with keys matching your ML model inputs
-    Example keys: ['temperature', 'humidity', 'rainfall', 'ph', 'nitrogen', ...]
+    Expected keys: N, P, K, temperature, humidity, pH, rainfall
     """
-    
 
-    # Convert features dict to list in the order your model expects
+    X = [[
+        float(features.get("N", 0)),
+        float(features.get("P", 0)),
+        float(features.get("K", 0)),
+        float(features.get("temperature", 0)),
+        float(features.get("humidity", 0)),
+        float(features.get("pH", 7)),
+        float(features.get("rainfall", 0)),
+    ]]
+
     if predict_top_crops_from_features is None:
-        # Fallback to dummy logic if ML isn't available
-        soil = features.get('soil_type', 'loamy')
-        weather = features.get('weather', 'moderate')
-        return dummy_crop_recommendation(soil, weather)
+        return [{"crop": "No model", "prob": 0.0}]
 
-    # Convert features dict to list in a stable order if needed
-    X = [list(features.values())]
     top3 = predict_top_crops_from_features(X)
-    if not top3:
-        return "No prediction"
-    # Return top-1 crop (string)
-    return top3[0][0]
+
+    # Case 1: function returns tuples (crop, prob)
+    if isinstance(top3[0], (list, tuple)) and len(top3[0]) == 2:
+        recommendations = [{"crop": crop, "prob": float(prob)} for crop, prob in top3[:3]]
+
+    # Case 2: function returns just crop names
+    else:
+        recommendations = [{"crop": crop, "prob": 1.0} for crop in top3[:3]]
+
+    return recommendations
