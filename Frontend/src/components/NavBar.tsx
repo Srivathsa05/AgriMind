@@ -1,4 +1,4 @@
-import { Sprout, Settings, Cloud, Activity, Leaf } from "lucide-react";
+import { Sprout, Settings, Activity, Leaf } from "lucide-react"; // Removed Cloud icon
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState } from 'react';
@@ -11,10 +11,10 @@ export const NavBar = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
 
+  // Updated navLinks: removed the "Weather" link
   const navLinks = [
     { to: "/crop-recommender", label: "Recommender", icon: Leaf },
     { to: "/yield-predictor", label: "Yield Predictor", icon: Activity },
-    { to: "/weather", label: "Weather", icon: Cloud },
     { to: "/settings", label: "Settings", icon: Settings },
   ];
 
