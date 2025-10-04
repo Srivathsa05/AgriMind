@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, render_template  
 from flask_cors import CORS
-from ml.crop_recommender.predict import predict_top_crops_from_features
 from datetime import datetime
 import uuid
+from .services import fetch_weather_data , fetch_soil_data 
 
 # In-memory history storage (replace with DB if needed)
 history = []
@@ -20,7 +20,7 @@ def create_app():
 
     @app.route("/predict", methods=["POST"])
     def predict():
-        data = request.get_json()
+        data = request.get_json() or {}
         try:
             # Extract features from JSON
             N = float(data.get("N"))
@@ -35,8 +35,27 @@ def create_app():
             # Create feature array for ML model
             X = [[N, P, K, temperature, rainfall, pH, humidity]]  # Adjust order if needed
 
-            top_crops = predict_top_crops_from_features(X)
-            response = [{"crop": crop, "prob": prob} for crop, prob in top_crops]
+            try:
+                from ml.crop_recommender.predict import predict_top_crops_from_features  # type: ignore
+                top_crops = predict_top_crops_from_features(X)
+                response = [{"crop": crop, "prob": prob} for crop, prob in top_crops]
+            except Exception:
+                # Fallback to internal simple recommender
+                from .storage import predict_crop
+                fallback_recs = predict_crop({
+                    "N": N,
+                    "P": P,
+                    "K": K,
+                    "temperature": temperature,
+                    "humidity": humidity,
+                    "pH": pH,
+                    "rainfall": rainfall,
+                })
+                # Ensure shape is [{crop, prob}]
+                if isinstance(fallback_recs, list) and fallback_recs and isinstance(fallback_recs[0], dict):
+                    response = fallback_recs
+                else:
+                    response = [{"crop": str(fallback_recs), "prob": 0.5}]
 
             # Save to history
             history_entry = {
@@ -55,7 +74,28 @@ def create_app():
     def get_history():
         return jsonify(history), 200
 
-    return app
+    @app.route('/api/weather', methods=['POST'])
+    def get_weather():
+        data = request.json or {}
+
+        # Accept coordinates; default to Pune, IN if not provided
+        latitude = float(data.get('latitude', 18.5204))
+        longitude = float(data.get('longitude', 73.8567))
+
+        weather_data = fetch_weather_data(latitude, longitude)
+
+        # Always return whatever we have (real or mock) with 200
+        return jsonify(weather_data), 200
+
+    @app.route('/api/soil', methods=['POST'])
+    def get_soil():
+        data = request.json or {}
+        # Accept coordinates; default to Pune, IN if not provided
+        latitude = float(data.get('latitude', 18.5204))
+        longitude = float(data.get('longitude', 73.8567))
+        soil_data = fetch_soil_data(latitude, longitude)
+        # Always return whatever we have (real or mock) with 200
+        return jsonify(soil_data), 200
     
     # Configure logging
     logging.basicConfig(level=logging.DEBUG)

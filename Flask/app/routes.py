@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, render_template
-from .storage import dummy_crop_recommendation
+from .storage import predict_crop
 from .models import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
 import logging
@@ -13,13 +13,22 @@ def home():
 
 @main.route("/recommend", methods=["POST"])
 def recommend():
-    data = request.get_json()
-    soil_type = data.get("soil_type", "loamy")
-    weather = data.get("weather", "moderate")
-
-    recommendation = dummy_crop_recommendation(soil_type, weather)
-
-    return jsonify({"recommended_crop": recommendation})
+    data = request.get_json() or {}
+    # Prefer full feature set if provided; otherwise use simple soil/weather
+    if any(k in data for k in ["N","P","K","temperature","humidity","pH","rainfall"]):
+        rec = predict_crop(data)
+        # predict_crop may return a string (top-1) or a list of recs
+        if isinstance(rec, list):
+            top = rec[0]["crop"] if rec and isinstance(rec[0], dict) and "crop" in rec[0] else str(rec[0])
+        else:
+            top = str(rec)
+        return jsonify({"recommended_crop": top})
+    else:
+        # Minimal fallback using simple heuristics via predict_crop
+        soil_type = data.get("soil_type", "loamy")
+        weather = data.get("weather", "moderate")
+        top = predict_crop({"soil_type": soil_type, "weather": weather})
+        return jsonify({"recommended_crop": str(top)})
 @main.route('/farmer/register', methods=['POST'])
 def register():
     try:
