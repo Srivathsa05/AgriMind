@@ -8,7 +8,7 @@ import WeatherWidget from "@/components/WeatherWidget";
 import SoilMeter from "@/components/SoilMeter";
 import MarketTrends from "@/components/MarketTrends";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/NavBar"; // 1. IMPORT THE NEW NAVBAR
+// NavBar is rendered in AppRoutes globally
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -76,7 +76,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar /> {/* 2. ADD THE NAVBAR COMPONENT HERE */}
       <FloatingToolbar />
       <ScrollIndicator />
 
