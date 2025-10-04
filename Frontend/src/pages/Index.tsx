@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button";
 import FloatingToolbar from "@/components/FloatingToolbar";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import CropCard from "@/components/CropCard";
-import WeatherWidget from "@/components/WeatherWidget";
 import SoilMeter from "@/components/SoilMeter";
 import MarketTrends from "@/components/MarketTrends";
 import { Link } from "react-router-dom";
-
-import NavBar from "@/components/NavBar";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -19,47 +16,47 @@ const Index = () => {
   }, []);
 
   const recommendedCrops = [
-    { name: "Rice", season: "Kharif Season", yield: "4.5 tons/hectare", profitability: 85, waterNeeds: "High", sunlight: "Full Sun", sustainability: 78, },
-    { name: "Wheat", season: "Rabi Season", yield: "3.8 tons/hectare", profitability: 82, waterNeeds: "Moderate", sunlight: "Full Sun", sustainability: 85, },
-    { name: "Maize", season: "Kharif Season", yield: "5.2 tons/hectare", profitability: 88, waterNeeds: "Moderate", sunlight: "Full Sun", sustainability: 80, },
-    { name: "Cotton", season: "Kharif Season", yield: "2.1 tons/hectare", profitability: 75, waterNeeds: "High", sunlight: "Full Sun", sustainability: 65, },
-    { name: "Pulses", season: "Rabi Season", yield: "1.8 tons/hectare", profitability: 90, waterNeeds: "Low", sunlight: "Full Sun", sustainability: 92, },
-    { name: "Sugarcane", season: "Year-round", yield: "80 tons/hectare", profitability: 78, waterNeeds: "Very High", sunlight: "Full Sun", sustainability: 60, },
+    { name: "Rice", season: "Kharif Season", yield: "4.5 tons/ha", profitability: 85, waterNeeds: "High", sunlight: "Full Sun", sustainability: 78 },
+    { name: "Wheat", season: "Rabi Season", yield: "3.8 tons/ha", profitability: 82, waterNeeds: "Moderate", sunlight: "Full Sun", sustainability: 85 },
+    { name: "Maize", season: "Kharif Season", yield: "5.2 tons/ha", profitability: 88, waterNeeds: "Moderate", sunlight: "Full Sun", sustainability: 80 },
+    { name: "Cotton", season: "Kharif Season", yield: "2.1 tons/ha", profitability: 75, waterNeeds: "High", sunlight: "Full Sun", sustainability: 65 },
+    { name: "Pulses", season: "Rabi Season", yield: "1.8 tons/ha", profitability: 90, waterNeeds: "Low", sunlight: "Full Sun", sustainability: 92 },
+    { name: "Sugarcane", season: "Year-round", yield: "80 tons/ha", profitability: 78, waterNeeds: "Very High", sunlight: "Full Sun", sustainability: 60 },
   ];
 
   return (
     <div className="min-h-screen bg-background">
-      {/* REMOVED: Navbar is now in Layout.tsx */}
       <FloatingToolbar />
       <ScrollIndicator />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0 gradient-hero opacity-90" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20" />
-        
-        <div className={`relative z-10 container mx-auto px-4 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="relative z-10 container mx-auto px-4 text-center transition-all duration-1000 
+          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect mb-6 animate-float">
             <Sparkles className="h-4 w-4 text-accent" />
             <span className="text-sm font-medium text-white">AI-Powered Agriculture</span>
           </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            AgriMind
-          </h1>
-          
+
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">AgriMind</h1>
+
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Get personalized crop recommendations based on real-time soil data, weather forecasts, 
+            Get personalized crop recommendations based on real-time soil data, weather forecasts,
             and market trends. Maximize yield, profitability, and sustainability.
           </p>
-          
-          <div className="flex flex-wrap gap-4 justify-center mb-12">
+
+          <div className="flex flex-wrap gap-4 justify-center mb-8">
             <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 shadow-elevated font-semibold px-8">
               <Link to="/crop-recommender">Crop Recommender</Link>
             </Button>
+            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 shadow-elevated font-semibold px-8">
+              <Link to="/yield-predictor">Yield Predictor</Link>
+            </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
             {[
               { label: "Crop Types", value: "30+", icon: "🌾" },
               { label: "Accuracy", value: "95%", icon: "🎯" },
@@ -89,18 +86,14 @@ const Index = () => {
             <Sprout className="h-4 w-4" />
             <span className="text-sm font-medium">Personalized Recommendations</span>
           </div>
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            Best Crops for Your Farm
-          </h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">Best Crops for Your Farm</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Based on your soil analysis, weather patterns, and current market conditions
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recommendedCrops.map((crop, index) => (
-            <div key={index} className="animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }} >
-              <CropCard {...crop} />
-            </div>
+            <CropCard key={index} {...crop} />
           ))}
         </div>
       </section>
@@ -108,9 +101,7 @@ const Index = () => {
       {/* Soil Analysis Section */}
       <section id="soil" className="py-20 container mx-auto px-4">
         <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            Soil Health Monitor
-          </h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">Soil Health Monitor</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Comprehensive soil analysis with real-time nutrient levels and recommendations
           </p>
@@ -124,9 +115,7 @@ const Index = () => {
       <section id="market" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Market Intelligence
-            </h2>
+            <h2 className="text-4xl font-bold text-foreground mb-4">Market Intelligence</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Live market prices and demand trends to maximize your profitability
             </p>
@@ -157,4 +146,3 @@ const Index = () => {
 };
 
 export default Index;
-

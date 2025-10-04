@@ -10,7 +10,7 @@ import CropRecommender from "./components/CropRecommender"; // Corrected import 
 import Layout from "./components/LayoutPage";           // Corrected import path
 import WeatherPage from "./pages/WeatherPage";
 import SettingsPage from "./pages/SettingsPage";     // 1. Import the new SettingsPage
-
+import YieldPredictor from "./components/YieldPredictor";
 import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
@@ -30,6 +30,7 @@ const App = () => (
               <Route path="crop-recommender" element={<CropRecommender />} />
               <Route path="weather" element={<WeatherPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="yield-predictor" element={<YieldPredictor />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

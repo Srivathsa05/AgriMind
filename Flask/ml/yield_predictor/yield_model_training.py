@@ -1,11 +1,19 @@
+import os
 import pandas as pd
 import joblib
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
 # -----------------------------
+# Step 0: Paths relative to this file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CSV_PATH = os.path.join(BASE_DIR, 'synthetic_crop_yield_dataset_full.csv')
+MODEL_PATH = os.path.join(BASE_DIR, 'crop_yield_model.pkl')
+FEATURE_PATH = os.path.join(BASE_DIR, 'feature_columns.pkl')
+
+# -----------------------------
 # Step 1: Load your dataset
-df = pd.read_csv('Flask\ml\yield_predictor\synthetic_crop_yield_dataset_full.csv')
+df = pd.read_csv(CSV_PATH)
 
 # Ensure all crop labels are lowercased
 df['label'] = df['label'].str.lower()
@@ -32,10 +40,10 @@ rf_model.fit(X_train, y_train)
 
 # -----------------------------
 # Step 5: Save model and feature order
-joblib.dump(rf_model, 'crop_yield_model.pkl')
-joblib.dump(FEATURE_COLUMNS, 'feature_columns.pkl')
-print("Model saved as 'crop_yield_model.pkl'")
-print("Feature columns saved as 'feature_columns.pkl'")
+joblib.dump(rf_model, MODEL_PATH)
+joblib.dump(FEATURE_COLUMNS, FEATURE_PATH)
+print(f"Model saved at {MODEL_PATH}")
+print(f"Feature columns saved at {FEATURE_PATH}")
 
 # -----------------------------
 # Step 6: Prediction function for multiple crops
@@ -43,17 +51,16 @@ NUMERIC_FEATURES = ['N','P','K','temperature','humidity','ph','rainfall','soil_m
 
 def predict_yield_for_crops(numeric_input, crops):
     """
-    numeric_input: list of 10 numeric features [N, P, K, temperature, humidity, ph, rainfall, soil_moisture, sunlight_hours, farm_size]
-    crops: list of crop names in lowercase, e.g., ['rice', 'wheat', 'maize']
-    
+    numeric_input: list of 10 numeric features
+    crops: list of crop names
     Returns a dict {crop_name: predicted_yield}
     """
     if len(numeric_input) != len(NUMERIC_FEATURES):
         raise ValueError(f"Numeric input must have {len(NUMERIC_FEATURES)} elements")
     
     # Load model and feature order
-    model = joblib.load('crop_yield_model.pkl')
-    feature_columns = joblib.load('feature_columns.pkl')
+    model = joblib.load(MODEL_PATH)
+    feature_columns = joblib.load(FEATURE_PATH)
     
     results = {}
     
@@ -71,10 +78,9 @@ def predict_yield_for_crops(numeric_input, crops):
             raise ValueError(f"Crop '{crop_name}' not recognized.")
         user_input[crop_col_name] = 1
 
-        # Convert to DataFrame
+        # Convert to DataFrame and reorder columns
+        import pandas as pd
         df_input = pd.DataFrame([user_input])
-
-        # Reorder columns to match training
         df_input = df_input[feature_columns]
 
         # Predict
