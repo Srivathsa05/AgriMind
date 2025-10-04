@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Sprout, ChevronDown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FloatingToolbar from "@/components/FloatingToolbar";
@@ -105,6 +106,7 @@ const Index = () => {
               className="bg-white text-primary hover:bg-white/90 shadow-elevated font-semibold px-8"
             >
               Get Started
+              
             </Button>
             <Button 
               size="lg" 
@@ -112,6 +114,13 @@ const Index = () => {
               className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm font-semibold px-8"
             >
               Learn More
+            </Button>
+            <Button 
+              asChild
+              size="lg" 
+              className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-elevated font-semibold px-8"
+            >
+              <Link to="/crop-recommender">Crop Recommender</Link>
             </Button>
           </div>
 
