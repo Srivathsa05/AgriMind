@@ -83,27 +83,92 @@ const Index = () => {
       </section>
 
       {/* Crop Recommendations Section */}
-      <section id="crops" className="py-20 container mx-auto px-4">
-        <div className="text-center mb-12 animate-slide-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
-            <Sprout className="h-4 w-4" />
-            <span className="text-sm font-medium">Personalized Recommendations</span>
-          </div>
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            Best Crops for Your Farm
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Based on your soil analysis, weather patterns, and current market conditions
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recommendedCrops.map((crop, index) => (
-            <div key={index} className="animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <CropCard {...crop} />
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 🌟 Trending On-Demand Crops */}
+<section id="trending-crops" className="py-20 container mx-auto px-4">
+  <div className="text-center mb-12 animate-slide-up">
+    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-4">
+      <Sprout className="h-4 w-4" />
+      <span className="text-sm font-medium">Trending Crops</span>
+    </div>
+    <h2 className="text-4xl font-bold text-foreground mb-4">
+      Trending/On-Demand Crops
+    </h2>
+    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+      These crops are currently in high demand in local and global markets.
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {/* Example static cards */}
+    <div className="animate-scale-in">
+      <CropCard
+        name="Quinoa"
+        season="Rabi"
+        yield="3.2 tons/hectare"
+        profitability={92}
+        waterNeeds="Low"
+        sunlight="Full Sun"
+        sustainability={88}
+      />
+    </div>
+    <div className="animate-scale-in" style={{ animationDelay: "0.1s" }}>
+      <CropCard
+        name="Chili"
+        season="Kharif"
+        yield="2.8 tons/hectare"
+        profitability={90}
+        waterNeeds="Moderate"
+        sunlight="Full Sun"
+        sustainability={75}
+      />
+    </div>
+    <div className="animate-scale-in" style={{ animationDelay: "0.2s" }}>
+      <CropCard
+        name="Tomato"
+        season="All Year"
+        yield="5.0 tons/hectare"
+        profitability={85}
+        waterNeeds="High"
+        sunlight="Full Sun"
+        sustainability={70}
+      />
+    </div>
+    <div className="animate-scale-in" style={{ animationDelay: "0.3s" }}>
+      <CropCard
+        name="Ginger"
+        season="Rabi"
+        yield="2.5 tons/hectare"
+        profitability={88}
+        waterNeeds="Moderate"
+        sunlight="Partial Shade"
+        sustainability={80}
+      />
+    </div>
+    <div className="animate-scale-in" style={{ animationDelay: "0.4s" }}>
+      <CropCard
+        name="Papaya"
+        season="All Year"
+        yield="12 tons/hectare"
+        profitability={83}
+        waterNeeds="Moderate"
+        sunlight="Full Sun"
+        sustainability={65}
+      />
+    </div>
+    <div className="animate-scale-in" style={{ animationDelay: "0.5s" }}>
+      <CropCard
+        name="Spinach"
+        season="All Year"
+        yield="1.2 tons/hectare"
+        profitability={78}
+        waterNeeds="Low"
+        sunlight="Partial Shade"
+        sustainability={90}
+      />
+    </div>
+  </div>
+</section>
+
 
       {/* Weather Section */}
       <section id="weather" className="py-20 bg-muted/30">
@@ -203,9 +268,10 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sprout className="h-6 w-6 text-primary" />
+                      <br></br><br></br>
             <span className="text-xl font-bold text-foreground">AgriMind</span>
           </div>
-          <p className="text-muted-foreground mb-4">
+          <p className="text-muted-foreground mb-8">
             Empowering farmers with AI-driven insights for sustainable agriculture
           </p>
           <p className="text-sm text-muted-foreground">
