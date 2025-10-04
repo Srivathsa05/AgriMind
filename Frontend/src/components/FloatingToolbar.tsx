@@ -19,8 +19,9 @@ const FloatingToolbar = () => {
 
   return (
     <TooltipProvider>
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-3">
-        <div className="glass-effect rounded-2xl p-2 shadow-elevated animate-slide-up">
+      {/* --- CHANGES ARE IN THIS DIV --- */}
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden md:flex flex-row gap-3">
+        <div className="glass-effect rounded-2xl p-2 shadow-elevated animate-slide-up flex gap-2">
           {tools.map((tool, index) => (
             <Tooltip key={index}>
               <TooltipTrigger asChild>
@@ -33,7 +34,8 @@ const FloatingToolbar = () => {
                   <tool.icon className="h-5 w-5" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right" className="bg-card border-border">
+              {/* --- TOOLTIP SIDE CHANGED TO "top" --- */}
+              <TooltipContent side="top" className="bg-card border-border">
                 <p>{tool.label}</p>
               </TooltipContent>
             </Tooltip>

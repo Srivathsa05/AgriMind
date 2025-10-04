@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CropRecommender from "./components/CropRecommender"; // 1. Import the new component
-
+import Navbar from "./components/NavBar";
 const queryClient = new QueryClient();
 
 const App = () => (

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Sprout, ChevronDown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FloatingToolbar from "@/components/FloatingToolbar";
@@ -8,6 +7,8 @@ import CropCard from "@/components/CropCard";
 import WeatherWidget from "@/components/WeatherWidget";
 import SoilMeter from "@/components/SoilMeter";
 import MarketTrends from "@/components/MarketTrends";
+import { Link } from "react-router-dom";
+import Navbar from "@/components/NavBar"; // 1. IMPORT THE NEW NAVBAR
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -75,11 +76,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navbar /> {/* 2. ADD THE NAVBAR COMPONENT HERE */}
       <FloatingToolbar />
       <ScrollIndicator />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* 3. ADD PADDING-TOP TO AVOID OVERLAP WITH FIXED NAVBAR */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0 gradient-hero opacity-90" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20" />
         
@@ -90,9 +93,7 @@ const Index = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            Smart Farming
-            <br />
-            <span className="text-accent">Sustainable Future</span>
+            AgriMind
           </h1>
           
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
@@ -101,25 +102,7 @@ const Index = () => {
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center mb-12">
-            <Button 
-              size="lg" 
-              className="bg-white text-primary hover:bg-white/90 shadow-elevated font-semibold px-8"
-            >
-              Get Started
-              
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm font-semibold px-8"
-            >
-              Learn More
-            </Button>
-            <Button 
-              asChild
-              size="lg" 
-              className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-elevated font-semibold px-8"
-            >
+            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 shadow-elevated font-semibold px-8">
               <Link to="/crop-recommender">Crop Recommender</Link>
             </Button>
           </div>
@@ -133,7 +116,7 @@ const Index = () => {
               <div key={index} className="glass-effect rounded-2xl p-6 hover:scale-105 transition-smooth">
                 <div className="text-4xl mb-2">{stat.icon}</div>
                 <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-white/80 text-sm">{stat.label}</div>
+                <div className="text-white text-sm font-medium" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.2)' }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -232,13 +215,13 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sprout className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">AgriSmart</span>
+            <span className="text-xl font-bold text-foreground">AgriMind</span>
           </div>
           <p className="text-muted-foreground mb-4">
             Empowering farmers with AI-driven insights for sustainable agriculture
           </p>
           <p className="text-sm text-muted-foreground">
-            © 2024 AgriSmart. All rights reserved.
+            © 2025 AgriMind. All rights reserved.
           </p>
         </div>
       </footer>
@@ -247,3 +230,4 @@ const Index = () => {
 };
 
 export default Index;
+
