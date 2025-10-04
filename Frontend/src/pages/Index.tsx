@@ -8,8 +8,8 @@ import WeatherWidget from "@/components/WeatherWidget";
 import SoilMeter from "@/components/SoilMeter";
 import MarketTrends from "@/components/MarketTrends";
 import { Link } from "react-router-dom";
-// REMOVED: No need to import Navbar here anymore
-// import Navbar from "@/components/NavBar";
+
+import Navbar from "@/components/NavBar";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
