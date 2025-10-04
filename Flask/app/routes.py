@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from .storage import dummy_crop_recommendation
+from .storage import predict_crop
 
 main = Blueprint("main", __name__)
 
@@ -11,11 +11,7 @@ def home():
 def recommend():
     try:
         data = request.get_json()
-        soil_type = data.get("soil_type", "loamy")
-        weather = data.get("weather", "moderate")
-
-        recommendation = dummy_crop_recommendation(soil_type, weather)
-
-        return jsonify({"recommended_crop": recommendation})
+        prediction = predict_crop(data)
+        return jsonify({"recommended_crop": prediction})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
