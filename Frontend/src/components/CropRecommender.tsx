@@ -8,7 +8,7 @@ import { GrCycle } from "react-icons/gr";
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
 
 // ==============================================================================
-// 1. SUB-COMPONENTS (Consolidated into one file)
+// 1. SUB-COMPONENTS (Consolidated for easy portability)
 // ==============================================================================
 
 const Loader = () => (
@@ -61,9 +61,7 @@ const RecommendationCard = ({ recommendation }) => {
 
 const HistoryPanel = ({ history }) => {
   if (!history || history.length === 0) return null;
-
   const formatTimestamp = (isoString) => new Date(isoString).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-
   return (
     <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
       <h3 className="text-xl font-semibold mb-4 flex items-center"><FaHistory className="mr-2"/> Recommendation History</h3>
@@ -83,9 +81,26 @@ const HowItWorksTooltip = () => (
   <div className="fixed bottom-5 right-5 group">
     <FaQuestionCircle className="text-3xl text-green-500 cursor-pointer" />
     <div className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-gray-800 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-      We use a Machine Learning model and your soil inputs to provide crop recommendations.
+      We use a Machine Learning model and your farm data to provide crop recommendations.
       <div className="absolute bottom-[-4px] right-4 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-t-8 border-t-gray-800"></div>
     </div>
+  </div>
+);
+
+// Helper component for form inputs to reduce repetition
+const FormInput = ({ name, value, onChange }) => (
+  <div>
+    <label htmlFor={name} className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">{name}</label>
+    <input
+      type={name === 'location' ? 'text' : 'number'}
+      name={name}
+      id={name}
+      value={value}
+      onChange={onChange}
+      className="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
+      step="any"
+      required
+    />
   </div>
 );
 
@@ -100,6 +115,9 @@ function CropRecommender() {
     K: '43',
     pH: '6.5',
     location: 'Bengaluru',
+    temperature: '27.1',
+    humidity: '80',
+    rainfall: '202.9',
   });
   const [recommendations, setRecommendations] = useState([]);
   const [history, setHistory] = useState([]);
@@ -113,7 +131,7 @@ function CropRecommender() {
   const fetchHistory = async () => {
     try {
       const response = await axios.get(`${API_URL}/history`);
-      setHistory(response.data.slice().reverse()); // Show most recent first
+      setHistory(response.data.slice().reverse());
     } catch (err) {
       console.error("Error fetching history:", err);
     }
@@ -137,12 +155,14 @@ function CropRecommender() {
         K: parseFloat(formData.K),
         pH: parseFloat(formData.pH),
         location: formData.location,
+        temperature: parseFloat(formData.temperature),
+        humidity: parseFloat(formData.humidity),
+        rainfall: parseFloat(formData.rainfall),
       });
       setRecommendations(response.data);
       await fetchHistory();
     } catch (err) {
       setError('Failed to get recommendation. Please check the inputs or try again later.');
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -153,50 +173,67 @@ function CropRecommender() {
   };
 
   return (
-    // This div is the main container for your component.
-    // The parent project will control its positioning on the page.
     <div className="p-4 sm:p-6 lg:p-8">
       <header className="mb-6">
         <h1 className="text-3xl sm:text-4xl font-bold text-green-500">Agri-Assist</h1>
         <p className="text-gray-600 dark:text-gray-400">AI-Powered Crop Recommendations</p>
       </header>
       
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        {/* Left Column: Input Form */}
         <div className="lg:col-span-1">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold mb-4">Enter Soil & Location Data</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {Object.keys(formData).map(key => (
-                <div key={key}>
-                  <label htmlFor={key} className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">{key}</label>
-                  <input
-                    type={key === 'location' ? 'text' : 'number'}
-                    name={key}
-                    id={key}
-                    value={formData[key]}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
-                    step="any"
-                    required
-                  />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Soil Data Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Soil Data</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormInput name="N" value={formData.N} onChange={handleInputChange} />
+                  <FormInput name="P" value={formData.P} onChange={handleInputChange} />
+                  <FormInput name="K" value={formData.K} onChange={handleInputChange} />
+                  <FormInput name="pH" value={formData.pH} onChange={handleInputChange} />
                 </div>
-              ))}
-              <div className="flex flex-wrap gap-2 pt-2">
-                 <button type="button" onClick={() => handlePresetClick({ N: '90', P: '45', K: '45', pH: '6.8', location: 'Bengaluru' })} className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Loamy Soil</button>
-                 <button type="button" onClick={() => handlePresetClick({ N: '25', P: '20', K: '30', pH: '5.5', location: 'Jaipur' })} className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Sandy Soil</button>
               </div>
-              <button type="submit" disabled={loading} className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
-                {loading ? 'Analyzing...' : 'Get Recommendation'}
-              </button>
+
+              {/* Location Data Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Location & Weather Data</h3>
+                <div className="space-y-4">
+                  <FormInput name="location" value={formData.location} onChange={handleInputChange} />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <FormInput name="temperature" value={formData.temperature} onChange={handleInputChange} />
+                    <FormInput name="humidity" value={formData.humidity} onChange={handleInputChange} />
+                    <FormInput name="rainfall" value={formData.rainfall} onChange={handleInputChange} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <button type="button" onClick={() => handlePresetClick({ N: '90', P: '45', K: '45', pH: '6.8', location: 'Bengaluru', temperature: '27', humidity: '75', rainfall: '200' })} className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Loamy Soil</button>
+                  <button type="button" onClick={() => handlePresetClick({ N: '25', P: '20', K: '30', pH: '5.5', location: 'Jaipur', temperature: '32', humidity: '40', rainfall: '65' })} className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Sandy Soil</button>
+                </div>
+                <button type="submit" disabled={loading} className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
+                  {loading ? 'Analyzing...' : 'Get Recommendation'}
+                </button>
+              </div>
             </form>
           </div>
           <HistoryPanel history={history} />
         </div>
 
-        <div className="lg:col-span-2">
+        {/* Right Column: Recommendations */}
+        <div className="lg:col-span-1">
            <h2 className="text-2xl font-semibold mb-4">Top 3 Recommendations</h2>
            {loading && <Loader />}
            {error && <p className="text-red-500 bg-red-100 dark:bg-red-900/50 p-4 rounded-lg">{error}</p>}
+           {!loading && recommendations.length === 0 && !error && (
+             <div className="text-center py-12 px-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <p className="text-gray-500 dark:text-gray-400">Your crop recommendations will appear here.</p>
+             </div>
+           )}
            <div className="space-y-4">
              {recommendations.map((rec, index) => (
                <RecommendationCard key={index} recommendation={rec} />
@@ -204,9 +241,11 @@ function CropRecommender() {
            </div>
         </div>
       </main>
+
       <HowItWorksTooltip />
     </div>
   );
 }
 
 export default CropRecommender;
+

@@ -3,9 +3,15 @@
 from flask import Flask, jsonify
 from .database import init_db 
 from .models import User, Query 
+from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
+
+    from .routes import main
+    app.register_blueprint(main)
+
     
     # ... Database Configuration and Initialization (already correct) ...
     
