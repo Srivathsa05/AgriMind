@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Sprout, ChevronDown, Sparkles, Tractor, Users } from "lucide-react";
+import { Sprout, ChevronDown, Sparkles, Tractor, Users, Activity, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FloatingToolbar from "@/components/FloatingToolbar";
 import ScrollIndicator from "@/components/ScrollIndicator";
@@ -170,98 +170,173 @@ const Index = () => {
 </section>
 
 
-      {/* Weather Section */}
-      <section id="weather" className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Weather & Conditions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Real-time weather data and 5-day forecast for optimal farming decisions
-            </p>
-          </div>
-          <div className="max-w-2xl mx-auto">
-            <WeatherWidget />
-          </div>
-        </div>
-      </section>
+      {/* Weather & Conditions Section */}
+<section id="weather" className="py-24 bg-gradient-to-b from-green-50 to-white dark:from-gray-900 dark:to-black">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12 animate-slide-up">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
+        Weather & Conditions
+      </h2>
+      <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        Real-time weather updates and 5-day forecasts to make smarter farming decisions.
+      </p>
+    </div>
 
-      {/* Soil Analysis Section */}
-      <section id="soil" className="py-20 container mx-auto px-4">
-        <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            Soil Health Monitor
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive soil analysis with real-time nutrient levels and recommendations
-          </p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      {/* Weather Card */}
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
+        <h3 className="text-2xl font-bold text-foreground mb-4">Current Weather</h3>
+        <p className="text-muted-foreground mb-6">
+          Check temperature, humidity, and precipitation in real-time for your farm region.
+        </p>
+        <div className="max-w-md mx-auto">
+          <WeatherWidget />
         </div>
-        <div className="max-w-4xl mx-auto">
-          <SoilMeter />
+      </div>
+
+      {/* Tips / Highlights Card */}
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
+        <h3 className="text-2xl font-bold text-foreground mb-4">Farming Tips</h3>
+        <ul className="text-muted-foreground space-y-3">
+          <li>🌡️ Optimal irrigation schedule based on recent rainfall</li>
+          <li>☀️ Sunlight hours forecast for crop planning</li>
+          <li>💨 Wind & storm alerts for crop protection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{/* Soil Health Monitor Section */}
+<section id="soil" className="py-24 bg-gradient-to-t from-green-50 to-white dark:from-gray-900 dark:to-black">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12 animate-slide-up">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
+        Soil Health Monitor
+      </h2>
+      <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        Comprehensive soil analysis with real-time nutrient levels, moisture, and pH readings for smarter crop management.
+      </p>
+    </div>
+
+    <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Soil Metrics Card */}
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
+        <h3 className="text-2xl font-bold text-foreground mb-4">Soil Nutrients</h3>
+        <p className="text-muted-foreground mb-6">
+          View key nutrients like Nitrogen, Phosphorus, and Potassium levels to optimize fertilization.
+        </p>
+        <SoilMeter />
+      </div>
+
+      {/* Crop Recommendations Card */}
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col">
+        <h3 className="text-2xl font-bold text-foreground mb-4">Crop Recommendations</h3>
+        <ul className="text-muted-foreground space-y-3 mb-6">
+          <li className="flex items-center gap-2">🥦 Choose crops suited to current soil pH and moisture</li>
+          <li className="flex items-center gap-2">💧 Optimize irrigation to maximize nutrient absorption</li>
+          <li className="flex items-center gap-2">🌱 Improve sustainability by rotating crops effectively</li>
+        </ul>
+
+        {/* Suggested Soil Improvements */}
+        <div className="mt-4 bg-green-100 dark:bg-green-900/30 p-4 rounded-xl">
+          <h4 className="text-lg font-semibold text-foreground mb-3">Suggested Soil Improvements</h4>
+          <ul className="space-y-2 text-muted-foreground">
+            <li className="flex items-center gap-2">
+              <Sprout className="h-5 w-5 text-green-600" /> Add organic compost to enrich soil nutrients
+            </li>
+            <li className="flex items-center gap-2">
+              <Leaf className="h-5 w-5 text-green-500" /> Implement cover cropping to prevent soil erosion
+            </li>
+            <li className="flex items-center gap-2">
+              <Activity className="h-5 w-5 text-green-700" /> Regularly test soil pH and adjust with lime or sulfur
+            </li>
+          </ul>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
+{/* Market Trends Section */}
+<section
+  id="market"
+  className="py-24 bg-gradient-to-t from-green-50 to-white dark:from-gray-900 dark:to-black"
+>
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12 animate-slide-up">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
+        Market Intelligence
+      </h2>
+      <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        Live market prices, demand trends, and insights to maximize your profitability.
+      </p>
+    </div>
 
-      {/* Market Trends Section */}
-      <section id="market" className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Market Intelligence
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Live market prices and demand trends to maximize your profitability
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <MarketTrends />
-          </div>
+    <div className="max-w-4xl mx-auto grid grid-cols-1 gap-8">
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
+        <h3 className="text-2xl font-bold text-foreground mb-4">Live Prices & Trends</h3>
+        <p className="text-muted-foreground mb-6">
+          Track real-time prices for crops and monitor market demand to make informed selling decisions.
+        </p>
+        <MarketTrends />
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Explore More Features Section */}
+<section
+  id="more-features"
+  className="py-24 bg-gradient-to-t from-white to-green-50 dark:from-gray-900 dark:to-black"
+>
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12 animate-slide-up">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
+        Explore More Features
+      </h2>
+      <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        Connect with the community, access tools, and enhance your farming experience.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      {/* Equipment Rentals Card */}
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-10 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col items-center">
+        <div className="bg-primary/10 p-5 rounded-full mb-5 shadow-inner">
+          <Tractor className="h-10 w-10 text-primary animate-pulse" />
         </div>
-      </section>
+        <h3 className="text-2xl font-bold text-foreground mb-3">Equipment Rentals</h3>
+        <p className="text-muted-foreground mb-8 flex-grow text-base text-center">
+          Access a wide range of farming equipment. Rent tractors, plows, and harvesters from verified owners near you.
+        </p>
+        <Button
+          asChild
+          variant="outline"
+          className="px-6 py-2 font-medium hover:bg-primary hover:text-white transition-all duration-300"
+        >
+          <Link to="/equipment">Browse Equipment</Link>
+        </Button>
+      </div>
 
-      {/* Explore More Features Section */}
-      <section id="more-features" className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Explore More Features
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Connect with the community and access the tools you need to succeed.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Equipment Rentals Card */}
-            <div className="bg-card border border-border rounded-2xl p-10 text-center hover:shadow-2xl hover:-translate-y-2 hover:border-primary/50 transition-all duration-300 flex flex-col items-center backdrop-blur-sm">
-              <div className="bg-primary/10 p-5 rounded-full mb-5 shadow-inner">
-                <Tractor className="h-10 w-10 text-primary" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-3">Equipment Rentals</h3>
-              <p className="text-muted-foreground mb-8 flex-grow text-base">
-                Access a wide range of farming equipment. Rent tractors, plows, and harvesters from verified owners near you.
-              </p>
-              <Button asChild variant="outline" className="px-6 py-2 font-medium hover:bg-primary hover:text-white transition-all">
-                <Link to="/equipment">Browse Equipment</Link>
-              </Button>
-            </div>
-
-            {/* Community Hub Card */}
-            <div className="bg-card border border-border rounded-2xl p-10 text-center hover:shadow-2xl hover:-translate-y-2 hover:border-primary/50 transition-all duration-300 flex flex-col items-center backdrop-blur-sm">
-              <div className="bg-primary/10 p-5 rounded-full mb-5 shadow-inner">
-                <Users className="h-10 w-10 text-primary" />
-              </div>
-              <h3 className="text-2xl font-bold text-foreground mb-3">Community Hub</h3>
-              <p className="text-muted-foreground mb-8 flex-grow text-base">
-                Join our community forum to connect with fellow farmers, share knowledge, and get answers to your questions.
-              </p>
-              <Button asChild variant="outline" className="px-6 py-2 font-medium hover:bg-primary hover:text-white transition-all">
-                <Link to="/community">Join the Community</Link>
-              </Button>
-            </div>
-          </div>
+      {/* Community Hub Card */}
+      <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl p-10 shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col items-center">
+        <div className="bg-primary/10 p-5 rounded-full mb-5 shadow-inner">
+          <Users className="h-10 w-10 text-primary animate-pulse" />
         </div>
-      </section>
+        <h3 className="text-2xl font-bold text-foreground mb-3">Community Hub</h3>
+        <p className="text-muted-foreground mb-8 flex-grow text-base text-center">
+          Join our community forum to connect with fellow farmers, share knowledge, and get answers to your questions.
+        </p>
+        <Button
+          asChild
+          variant="outline"
+          className="px-6 py-2 font-medium hover:bg-primary hover:text-white transition-all duration-300"
+        >
+          <Link to="/community">Join the Community</Link>
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="py-12 border-t border-border">

@@ -1,4 +1,7 @@
-# app/__init__.py
+# File: Flask/app/__init__.py
+# 
+# FIX 1: Add 'os' import for environment variables
+import os 
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -9,6 +12,7 @@ from .services import fetch_weather_data , fetch_soil_data
 import logging
 
 from .database import db
+# NOTE: The imports below assume the path starts from the directory containing 'Flask'
 from ml.crop_recommender.predict import predict_top_crops_from_features
 from ml.yield_predictor.yield_model_training import predict_yield_for_crops
 
@@ -25,26 +29,26 @@ def create_app():
     logging.basicConfig(level=logging.DEBUG)
     logger = logging.getLogger(__name__)
 
-    # Database configuration (single init)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///agrimind.db'
+    # Database configuration (Render uses the DATABASE_URL environment variable)
+    # FIX 2: Use os.environ.get for the live database URL on Render
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'your-secret-key-here'
     db.init_app(app)
 
     # -----------------------------
-    # Root endpoint
+    # Routes Definition
     # -----------------------------
+    
     @app.route("/")
     def home():
         return jsonify({"message": "AgriMind API is running"}), 200
 
-    # -----------------------------
-    # Crop recommendation endpoint
-    # -----------------------------
     @app.route("/predict", methods=["POST"])
     def predict():
         data = request.get_json() or {}
         try:
+            # Type casting inputs
             N = float(data.get("N"))
             P = float(data.get("P"))
             K = float(data.get("K"))
@@ -54,7 +58,7 @@ def create_app():
             rainfall = float(data.get("rainfall"))
 
             # Create feature array for ML model
-            X = [[N, P, K, temperature, rainfall, pH, humidity]]  # Adjust order if needed
+            X = [[N, P, K, temperature, rainfall, pH, humidity]] # Adjust order if needed
 
             try:
                 from ml.crop_recommender.predict import predict_top_crops_from_features  # type: ignore
@@ -89,9 +93,6 @@ def create_app():
             logger.error(f"Prediction error: {e}")
             return jsonify({"error": str(e)}), 400
 
-    # -----------------------------
-    # Yield prediction endpoint
-    # -----------------------------
     @app.route("/predict_yield", methods=["POST"])
     def predict_yield():
         data = request.get_json()
@@ -119,9 +120,6 @@ def create_app():
             logger.error(f"Yield prediction error: {e}")
             return jsonify({"error": str(e)}), 400
 
-    # -----------------------------
-    # History endpoint
-    # -----------------------------
     @app.route("/history", methods=["GET"])
     def get_history():
         return jsonify(history), 200
@@ -149,7 +147,7 @@ def create_app():
         # Always return whatever we have (real or mock) with 200
         return jsonify(soil_data), 200
     
-    # Register blueprints
+    # Register blueprints (Note: ensure 'main' is defined in .routes)
     from .routes import main
     app.register_blueprint(main)
     
@@ -164,9 +162,12 @@ def create_app():
 
     return app
 
+# CRITICAL FIX: Instantiate the app so Gunicorn can find the 'app' attribute
+# This line MUST be outside of the 'if __name__ == "__main__":' block.
+app = create_app()
+
 # -----------------------------
-# Run directly
+# Run directly (ONLY for local development)
 # -----------------------------
 if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000) # Changed host to 0.0.0.0 for compatibility

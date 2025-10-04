@@ -16,12 +16,18 @@ const FloatingToolbar = () => {
     {
       icon: Sprout,
       label: "Crop Recommendations",
-      action: () => document.getElementById("crops")?.scrollIntoView({ behavior: "smooth" }),
+      action: () => document.getElementById("trending-crops")?.scrollIntoView({ behavior: "smooth" }),
     },
     {
       icon: CloudRain,
       label: "Weather Forecast",
       action: () => document.getElementById("weather")?.scrollIntoView({ behavior: "smooth" }),
+    },
+    
+    {
+      icon: Map,
+      label: "Soil Analysis",
+      action: () => document.getElementById("soil")?.scrollIntoView({ behavior: "smooth" }),
     },
     {
       icon: TrendingUp,
@@ -29,14 +35,9 @@ const FloatingToolbar = () => {
       action: () => document.getElementById("market")?.scrollIntoView({ behavior: "smooth" }),
     },
     {
-      icon: Map,
-      label: "Soil Analysis",
-      action: () => document.getElementById("soil")?.scrollIntoView({ behavior: "smooth" }),
-    },
-    {
       icon: BookOpen,
-      label: "Resources",
-      action: () => {}, // Add resources logic here
+      label: "More Features",
+      action: () =>document.getElementById("more-features")?.scrollIntoView({ behavior: "smooth" }),
     },
     {
       icon: Settings,
