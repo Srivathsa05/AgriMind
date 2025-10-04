@@ -1,19 +1,45 @@
-import { Sprout, Settings, Home } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
-import { Button } from "@/components/ui/button"; // Import the Button component
+import { Sprout, Settings, Cloud } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom"; 
+import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { AuthModal } from './auth/AuthModal';
 
-const Navbar = () => {
+export const NavBar = () => {
+  const location = useLocation();
+  const { isAuthenticated, logout } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  
   const navLinks = [
-    { to: "/", label: "Home", icon: Home },
     { to: "/crop-recommender", label: "Recommender", icon: Sprout },
-    { to: "/settings", label: "Settings", icon: Settings }, // Example link
+    { to: "/weather", label: "Weather", icon: Cloud },
+    { to: "/settings", label: "Settings", icon: Settings },
   ];
 
+  const handleAuthClick = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
+  };
+
+  // 3. Create the click handler function
+  const handleBrandClick = () => {
+    // If we are already on the homepage, scroll to the top
+    if (location.pathname === '/') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Brand Logo and Name */}
-        <Link to="/" className="flex items-center gap-2">
+        {/* 4. Add the onClick handler to the Link */}
+        <Link to="/" onClick={handleBrandClick} className="flex items-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
           <span className="text-xl font-bold text-foreground">AgriMind</span>
         </Link>
@@ -41,18 +67,44 @@ const Navbar = () => {
         
           {/* Auth Buttons */}
           <div className="flex items-center gap-2">
-            <Button variant="outline" className="font-semibold">
-              Register
-            </Button>
-            <Button variant="default" className="font-semibold">
-              Login
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                variant="outline"
+                className="font-semibold"
+                onClick={logout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  className="font-semibold"
+                  onClick={() => handleAuthClick('login')}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="default"
+                  className="font-semibold"
+                  onClick={() => handleAuthClick('register')}
+                >
+                  Register
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
+
     </header>
+    <AuthModal
+      isOpen={authModalOpen}
+      onClose={() => setAuthModalOpen(false)}
+      initialTab={authMode}
+    />
+    </>
   );
 };
 
-export default Navbar;
-
+export default NavBar;
