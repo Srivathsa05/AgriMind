@@ -86,8 +86,21 @@ function YieldPredictor() {
     }
   };
 
-  // Detect current theme (light/dark) for react-select
   const isDark = document.documentElement.classList.contains("dark");
+
+  // Placeholder mapping
+  const placeholders: Record<string, string> = {
+    N: "Nitrogen (kg/ha)",
+    P: "Phosphorus (kg/ha)",
+    K: "Potassium (kg/ha)",
+    pH: "Soil pH",
+    temperature: "Temperature (°C)",
+    humidity: "Humidity (%)",
+    rainfall: "Rainfall (mm)",
+    soil_moisture: "Soil Moisture (%)",
+    sunlight_hours: "Sunlight Hours/day",
+    farm_size: "Farm Size (ha)"
+  };
 
   return (
     <div className="pt-16 pb-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -146,7 +159,7 @@ function YieldPredictor() {
                 name={key}
                 value={value}
                 onChange={handleChange}
-                placeholder={key.replace("_", " ")}
+                placeholder={placeholders[key]}
                 required
                 className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none transition"
                 type="number"
