@@ -1,19 +1,33 @@
-import { Sprout, Settings, Home } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
-import { Button } from "@/components/ui/button"; // Import the Button component
+import { Sprout, Settings, Cloud, Home } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom"; // 1. Import useLocation
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
+  const location = useLocation(); // 2. Get the current page location
+
   const navLinks = [
-    { to: "/", label: "Home", icon: Home },
     { to: "/crop-recommender", label: "Recommender", icon: Sprout },
-    { to: "/settings", label: "Settings", icon: Settings }, // Example link
+    { to: "/weather", label: "Weather", icon: Cloud }, // Assuming a /weather route
+    { to: "/settings", label: "Settings", icon: Settings },
   ];
+
+  // 3. Create the click handler function
+  const handleBrandClick = () => {
+    // If we are already on the homepage, scroll to the top
+    if (location.pathname === '/') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Brand Logo and Name */}
-        <Link to="/" className="flex items-center gap-2">
+        {/* 4. Add the onClick handler to the Link */}
+        <Link to="/" onClick={handleBrandClick} className="flex items-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
           <span className="text-xl font-bold text-foreground">AgriMind</span>
         </Link>
