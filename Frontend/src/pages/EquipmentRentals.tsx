@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search } from 'lucide-react';
-import EquipmentCard, { EquipmentItem } from '@/components/EquipmentCArds';
+import EquipmentCard, { EquipmentItem } from '@/components/EquipmentCards';
 
 const sampleData: EquipmentItem[] = [
   { 
