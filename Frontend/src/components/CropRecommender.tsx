@@ -52,19 +52,19 @@ const RecommendationCard = ({ recommendation }: { recommendation: Recommendation
         <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
            <GiMoneyStack className="mx-auto text-3xl text-green-500 mb-1"/>
            <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Est. Profit</p>
-           <p className="text-lg font-semibold">-</p>
+           <p className="text-lg font-semibold">{recommendation.profit ?? '-'}</p>
         </div>
          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
            <GrCycle className="mx-auto text-3xl text-blue-500 mb-1"/>
            <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Sustainability</p>
-           <p className="text-lg font-semibold">-</p>
+           <p className="text-lg font-semibold">{recommendation.sustainability ?? '-'}</p>
         </div>
       </div>
     </div>
   );
 };
 
-const HistoryPanel = ({ history }: { history: any[] }) => {
+const HistoryPanel = ({ history }: { history?: any[] }) => {
   if (!history || history.length === 0) return null;
   const formatTimestamp = (isoString: string) =>
     new Date(isoString).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
@@ -72,12 +72,15 @@ const HistoryPanel = ({ history }: { history: any[] }) => {
     <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
       <h3 className="text-xl font-semibold mb-4 flex items-center"><FaHistory className="mr-2"/> Recommendation History</h3>
       <ul className="space-y-3 max-h-60 overflow-y-auto">
-        {history.map((item) => (
-          <li key={item._id} className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-2 rounded-md">
-            <span className="font-medium capitalize">{item.recommendations[0]?.crop || 'N/A'}</span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">{formatTimestamp(item.timestamp)}</span>
-          </li>
-        ))}
+        {history.map((item) => {
+          const firstRecommendation = item.recommendations?.[0];
+          return (
+            <li key={item._id} className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-2 rounded-md">
+              <span className="font-medium capitalize">{firstRecommendation?.crop || 'N/A'}</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">{formatTimestamp(item.timestamp)}</span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -127,9 +130,10 @@ function CropRecommender() {
   const fetchHistory = async () => {
     try {
       const response = await axios.get(`${API_URL}/history`);
-      setHistory(response.data.slice().reverse());
+      setHistory(response.data?.slice().reverse() || []);
     } catch (err) {
       console.error("Error fetching history:", err);
+      setHistory([]);
     }
   };
 
@@ -163,9 +167,9 @@ function CropRecommender() {
         rainfall: parseFloat(formData.rainfall),
       });
 
-      const recs = response.data.map((item: any) => ({
-        crop: item.crop,
-        prob: item.prob,
+      const recs = (response.data || []).map((item: any) => ({
+        crop: item.crop || 'N/A',
+        prob: item.prob || 0,
         yield: "-", profit: 0, sustainability: "-"
       }));
 
@@ -179,7 +183,6 @@ function CropRecommender() {
     }
   };
 
-  // ✅ RETURN JSX
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <header className="mb-6">
@@ -188,7 +191,6 @@ function CropRecommender() {
       </header>
 
       <main className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Form */}
         <div className="lg:col-span-1">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -224,7 +226,6 @@ function CropRecommender() {
           <HistoryPanel history={history}/>
         </div>
 
-        {/* Right Recommendations */}
         <div className="lg:col-span-1">
           <h2 className="text-2xl font-semibold mb-4">Top 3 Recommendations</h2>
           {loading && <Loader />}
