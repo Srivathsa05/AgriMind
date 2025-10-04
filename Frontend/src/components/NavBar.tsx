@@ -1,26 +1,28 @@
-import { Sprout, Settings, Cloud, Wrench } from "lucide-react"; 
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Sprout, Settings, Cloud } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom"; 
 import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { AuthModal } from './auth/AuthModal';
 
-// Helper function for NavLink class logic (improves readability)
-const getNavLinkClasses = (isActive) =>
-  `flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-    isActive
-      ? "bg-primary/10 text-primary"
-      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-  }`;
-
-const Navbar = () => {
+export const NavBar = () => {
   const location = useLocation();
-
+  const { isAuthenticated, logout } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  
   const navLinks = [
     { to: "/crop-recommender", label: "Recommender", icon: Sprout },
     { to: "/weather", label: "Weather", icon: Cloud },
     { to: "/settings", label: "Settings", icon: Settings },
-    // Path correctly links to the Equipment Rentals route
-    { to: "/equipment-rentals", label: "Equipment", icon: Wrench }, 
   ];
 
+  const handleAuthClick = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
+  };
+
+  // 3. Create the click handler function
   const handleBrandClick = () => {
     // If we are already on the homepage, scroll to the top
     if (location.pathname === '/') {
@@ -32,50 +34,77 @@ const Navbar = () => {
   };
 
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Brand Logo and Name */}
-        <Link 
-          to="/" 
-          onClick={handleBrandClick} 
-          className="flex items-center gap-2"
-          aria-label="Home" // Added aria-label for accessibility
-        >
+        {/* 4. Add the onClick handler to the Link */}
+        <Link to="/" onClick={handleBrandClick} className="flex items-center gap-2">
           <Sprout className="h-7 w-7 text-primary" />
           <span className="text-xl font-bold text-foreground">AgriMind</span>
         </Link>
 
         <div className="flex items-center gap-4">
-          {/* Navigation Links (Desktop) */}
-          <nav className="hidden md:flex items-center gap-2" aria-label="Main navigation">
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
               <NavLink
                 key={link.label}
                 to={link.to}
-                // Applies dynamic styling based on the active route
-                className={({ isActive }) => getNavLinkClasses(isActive)}
-                // Added aria-label for improved screen reader support
-                aria-label={link.label} 
+                className={({ isActive }) =>
+                  `flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                  }`
+                }
               >
-                <link.icon className="h-4 w-4" aria-hidden="true" />
+                <link.icon className="h-4 w-4" />
                 <span>{link.label}</span>
               </NavLink>
             ))}
           </nav>
-          
+        
           {/* Auth Buttons */}
           <div className="flex items-center gap-2">
-            <Button variant="outline" className="font-semibold">
-              Register
-            </Button>
-            <Button variant="default" className="font-semibold">
-              Login
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                variant="outline"
+                className="font-semibold"
+                onClick={logout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  className="font-semibold"
+                  onClick={() => handleAuthClick('login')}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="default"
+                  className="font-semibold"
+                  onClick={() => handleAuthClick('register')}
+                >
+                  Register
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
+
     </header>
+    <AuthModal
+      isOpen={authModalOpen}
+      onClose={() => setAuthModalOpen(false)}
+      initialTab={authMode}
+    />
+    </>
   );
 };
 
-export default Navbar;
+export default NavBar;

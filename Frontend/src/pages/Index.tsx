@@ -9,7 +9,7 @@ import SoilMeter from "@/components/SoilMeter";
 import MarketTrends from "@/components/MarketTrends";
 import { Link } from "react-router-dom";
 
-import Navbar from "@/components/NavBar";
+import NavBar from "@/components/NavBar";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
