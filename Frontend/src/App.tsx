@@ -1,3 +1,4 @@
+// Frontend/src/App.tsx
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,9 @@ import CropRecommender from "./components/CropRecommender"; // Corrected import 
 import Layout from "./components/LayoutPage";           // Corrected import path
 import WeatherPage from "./pages/WeatherPage";
 import SettingsPage from "./pages/SettingsPage";     // 1. Import the new SettingsPage
+
+import { AuthProvider } from "./contexts/AuthContext";
+import AppRoutes from "./AppRoutes"; // We'll create this component next
 
 const queryClient = new QueryClient();
 

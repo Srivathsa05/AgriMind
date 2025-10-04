@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Sprout, Settings, Cloud, Home } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom"; // 1. Import useLocation
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,24 @@ const Navbar = () => {
     { to: "/weather", label: "Weather", icon: Cloud }, // Assuming a /weather route
     { to: "/settings", label: "Settings", icon: Settings },
   ];
+=======
+// Frontend/src/components/NavBar.tsx
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { AuthModal } from './auth/AuthModal';
+import { LogOut, User } from 'lucide-react';
+
+export const NavBar = () => {
+  const { isAuthenticated, logout } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+
+  const handleAuthClick = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
+  };
+>>>>>>> c24fabc1579c9743f52e71d6279546a21056e7a4
 
   // 3. Create the click handler function
   const handleBrandClick = () => {
@@ -23,6 +42,7 @@ const Navbar = () => {
   };
 
   return (
+<<<<<<< HEAD
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Brand Logo and Name */}
@@ -61,12 +81,59 @@ const Navbar = () => {
             <Button variant="default" className="font-semibold">
               Login
             </Button>
+=======
+    <nav className="bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <span className="text-xl font-bold text-green-600">AgriMind</span>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            {isAuthenticated ? (
+              <>
+                <Button variant="ghost" className="flex items-center space-x-2">
+                  <User size={18} />
+                  <span>Profile</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={logout}
+                  className="flex items-center space-x-2"
+                >
+                  <LogOut size={18} />
+                  <span>Logout</span>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => handleAuthClick('login')}
+                >
+                  Login
+                </Button>
+                <Button 
+                  variant="default" 
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={() => handleAuthClick('register')}
+                >
+                  Register
+                </Button>
+              </>
+            )}
+>>>>>>> c24fabc1579c9743f52e71d6279546a21056e7a4
           </div>
         </div>
       </div>
-    </header>
+
+      <AuthModal 
+        isOpen={authModalOpen} 
+        onClose={() => setAuthModalOpen(false)}
+        initialTab={authMode}
+      />
+    </nav>
   );
 };
 
-export default Navbar;
-
+export default NavBar;
