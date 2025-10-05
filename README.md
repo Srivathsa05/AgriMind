@@ -1,6 +1,5 @@
 # AgroAdvisor AI: AI-Powered Crop Recommendation System
 
-![Project Banner](https://via.placeholder.com/1200x300.png?text=AgroAdvisor+AI)
 An AI-driven web application that provides farmers with personalized crop recommendations. By integrating real-time data on soil properties, weather forecasts, market trends, and crop rotation history, AgroAdvisor AI aims to boost yield, increase profitability, and promote sustainable agricultural practices.
 
 ---
@@ -59,14 +58,14 @@ This project is built using a modern technology stack:
 
 -   **Frontend**: HTML, CSS, JavaScript (You can specify frameworks like **React.js, Vue.js, or Angular**)
 -   **Backend**: Python (Using frameworks like **Flask** or **Django**)
--   **Database**: PostgreSQL / MySQL / MongoDB (Choose what you use)
+-   **Database**: PostgreSQL / MySQL / MongoDB 
 -   **Machine Learning**: Scikit-learn, TensorFlow, PyTorch, Pandas, NumPy
 -   **APIs & Data Sources**:
     -   Soil Grids API
     -   ISRO's Bhuvan API
     -   OpenWeatherMap API
     -   Government Agri-Market Portals (via scraping or official APIs)
--   **Deployment**: Docker, AWS, Heroku, Google Cloud (Choose what you use)
+-   **Deployment**: Docker, AWS, Heroku, Google Cloud 
 
 ## 🚀 Getting Started
 
