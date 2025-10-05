@@ -348,10 +348,11 @@ const Index = () => {
           </div>
           <p className="text-muted-foreground mb-8">
             Empowering farmers with AI-driven insights for sustainable agriculture
-          </p>
-          <p className="text-sm text-muted-foreground">
+          
+          <hr></hr>
             © 2025 AgriMind. All rights reserved.
           </p>
+          <br></br>
         </div>
       </footer>
     </div>
