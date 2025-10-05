@@ -1,7 +1,7 @@
 import { Sprout, Settings, Activity, Leaf, Bot } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthModal } from "./auth/AuthModal";
 import VoiceAssistant from "./VoiceAssistant";
@@ -31,13 +31,7 @@ export const NavBar = () => {
     }
   };
 
-  // Auto-open auth modal when user is not authenticated on initial load
-  useEffect(() => {
-    if (!loading) {
-      if (!isAuthenticated) setAuthModalOpen(true);
-      else setAuthModalOpen(false);
-    }
-  }, [loading, isAuthenticated]);
+  // Removed auto-open behavior; login is now optional and user-triggered via button
 
   return (
     <>
