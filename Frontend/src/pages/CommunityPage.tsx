@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageSquare, ThumbsUp, UserCheck, Video, PlusCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
-// Placeholder data for the page
+// Add a unique 'id' to each post for routing
 const forumPosts = [
-  { author: "John Farmer", avatar: "https://github.com/shadcn.png", title: "Best irrigation techniques for sandy soil?", replies: 12, likes: 34, time: "2 hours ago" },
-  { author: "Jane Appleseed", avatar: "https://github.com/shadcn.png", title: "Dealing with pests on my tomato plants - organic solutions?", replies: 8, likes: 22, time: "5 hours ago" },
-  { author: "Sam Root", avatar: "https://github.com/shadcn.png", title: "Market prices for corn are up this week in my region.", replies: 5, likes: 45, time: "1 day ago" },
+  { id: '1', author: "John Farmer", avatar: "https://github.com/shadcn.png", title: "Best irrigation techniques for sandy soil?", replies: 12, likes: 34, time: "2 hours ago" },
+  { id: '2', author: "Jane Appleseed", avatar: "https://github.com/shadcn.png", title: "Dealing with pests on my tomato plants - organic solutions?", replies: 8, likes: 22, time: "5 hours ago" },
+  { id: '3', author: "Sam Root", avatar: "https://github.com/shadcn.png", title: "Market prices for corn are up this week in my region.", replies: 5, likes: 45, time: "1 day ago" },
 ];
 
 const experts = [
@@ -16,11 +17,22 @@ const experts = [
   { name: "Maria Garcia", specialty: "Agronomist", avatar: "https://github.com/shadcn.png" },
 ];
 
-// --- UPDATED TUTORIAL LINKS ---
 const tutorials = [
-  { title: "Mastering Drip Irrigation", thumbnail: "https://placehold.co/600x400/34d399/ffffff?text=Video", link: "https://www.youtube.com/watch?v=UE-45y6iK-I" },
-  { title: "Organic Pest Control Basics", thumbnail: "https://placehold.co/600x400/34d399/ffffff?text=Video", link: "https://www.youtube.com/watch?v=Ra-i_9-u2gA" },
-  { title: "Maximizing Wheat Yield", thumbnail: "https://placehold.co/600x400/34d399/ffffff?text=Video", link: "https://www.youtube.com/watch?v=D-41_p9-9fA" },
+  { 
+    title: "Mastering Drip Irrigation", 
+    thumbnail: "https://images.unsplash.com/photo-1579547633355-6b2f6f5b9d5a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxkcmVlJTIwaXJyaWdhdGlvbnxlbnwwfDB8fHwxNzAzNTQ1NjcyfDA&ixlib=rb-4.0.3&q=80&w=1080", 
+    link: "https://www.youtube.com/watch?v=UE-45y6iK-I"
+  },
+  { 
+    title: "Organic Pest Control Basics", 
+    thumbnail: "https://images.unsplash.com/photo-1520697923769-d41a7d1a2f64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxwZXN0JTIwY29udHJvbCUyMGZhcm1pbmd8ZW58MHwwfHx8MTcwMzU0NjI4Nnww&ixlib=rb-4.0.3&q=80&w=1080", 
+    link: "https://www.youtube.com/watch?v=Ra-i_9-u2gA"
+  },
+  { 
+    title: "Maximizing Wheat Yield", 
+    thumbnail: "https://images.unsplash.com/photo-1506456095055-6c7b3c2d4c0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxoYXJ2ZXN0aW5nJTIwd2hlYXQxfGVufDB8MHx8fDE3MDM1NDYyODl8MA&ixlib=rb-4.0.3&q=80&w=1080", 
+    link: "https://www.youtube.com/watch?v=D-41_p9-9fA"
+  },
 ];
 
 const CommunityPage = () => {
@@ -46,20 +58,23 @@ const CommunityPage = () => {
             </Button>
           </div>
           <div className="space-y-6">
-            {forumPosts.map((post, index) => (
-              <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar><AvatarImage src={post.avatar} alt={post.author} /><AvatarFallback>{post.author.charAt(0)}</AvatarFallback></Avatar>
-                  <div>
-                    <CardTitle className="text-lg">{post.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground">Posted by {post.author} • {post.time}</p>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex justify-end items-center gap-6 text-muted-foreground">
-                  <div className="flex items-center gap-2"><ThumbsUp className="h-4 w-4" /><span>{post.likes}</span></div>
-                  <div className="flex items-center gap-2"><MessageSquare className="h-4 w-4" /><span>{post.replies}</span></div>
-                </CardContent>
-              </Card>
+            {forumPosts.map((post) => (
+              // Wrap each card with a Link component to make it a clickable route
+              <Link to={`/community/${post.id}`} key={post.id}>
+                <Card className="hover:shadow-md transition-shadow">
+                  <CardHeader className="flex flex-row items-center gap-4">
+                    <Avatar><AvatarImage src={post.avatar} alt={post.author} /><AvatarFallback>{post.author.charAt(0)}</AvatarFallback></Avatar>
+                    <div>
+                      <CardTitle className="text-lg">{post.title}</CardTitle>
+                      <p className="text-sm text-muted-foreground">Posted by {post.author} • {post.time}</p>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex justify-end items-center gap-6 text-muted-foreground">
+                    <div className="flex items-center gap-2"><ThumbsUp className="h-4 w-4" /><span>{post.likes}</span></div>
+                    <div className="flex items-center gap-2"><MessageSquare className="h-4 w-4" /><span>{post.replies}</span></div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
