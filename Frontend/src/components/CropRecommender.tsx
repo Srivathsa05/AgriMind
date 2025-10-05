@@ -22,6 +22,50 @@ interface Recommendation {
   sustainability?: string;
 }
 
+// Profitability mapping provided by user (values are percentages)
+const crops_profitability: Record<string, number> = {
+  rice: 20,
+  wheat: 25,
+  maize: 30,
+  barley: 25,
+  sorghum: 20,
+  millets: 40,
+  cotton: 20,
+  sugarcane: 35,
+  tobacco: 45,
+  jute: 25,
+
+  brinjal: 45,
+  chili: 50,
+  onion: 40,
+  potato: 35,
+  tomato: 45,
+
+  soybean: 30,
+  blackgram: 35,
+  mungbean: 40,
+  mothbeans: 35,
+  chickpea: 40,
+  lentil: 30,
+  kidneybeans: 35,
+  pigeonpeas: 40,
+
+  banana: 60,
+  mango: 50,
+  papaya: 70,
+  pomegranate: 60,
+  watermelon: 50,
+  muskmelon: 45,
+  apple: 40,
+  grapes: 60,
+  orange: 45,
+  coconut: 40,
+  coffee: 55,
+};
+
+// Normalize crop names to keys: lowercase and remove spaces/hyphens
+const normalizeCropKey = (name: string) => name.toLowerCase().replace(/\s+/g, "").replace(/[-_]/g, "");
+
 const RecommendationCard = ({ recommendation }: { recommendation: Recommendation }) => {
   const [copied, setCopied] = useState(false);
 
@@ -46,13 +90,12 @@ const RecommendationCard = ({ recommendation }: { recommendation: Recommendation
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
         <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
            <GiWheat className="mx-auto text-3xl text-yellow-500 mb-1"/>
-           <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Probability</p>
            <p className="text-lg font-semibold">{(recommendation.prob * 100).toFixed(2)}%</p>
         </div>
         <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
            <GiMoneyStack className="mx-auto text-3xl text-green-500 mb-1"/>
            <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Est. Profit</p>
-           <p className="text-lg font-semibold">{recommendation.profit ?? '-'}</p>
+          <p className="text-lg font-semibold">{recommendation.profit !== undefined ? `${recommendation.profit.toFixed(2)}%` : '-'}</p>
         </div>
          <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
            <GrCycle className="mx-auto text-3xl text-blue-500 mb-1"/>
@@ -180,11 +223,20 @@ function CropRecommender() {
         farm_size: parseFloat(formData.farm_size)
       });
 
-      const recs = (response.data || []).map((item: any) => ({
-        crop: item.crop || 'N/A',
-        prob: item.prob || 0,
-        yield: "-", profit: 0, sustainability: "-"
-      }));
+      const recs = (response.data || [])
+        .slice(0, 3) // Only top 3 recommendations
+        .map((item: any) => {
+          const crop = item.crop || 'N/A';
+          const key = normalizeCropKey(crop);
+          const profit = crops_profitability[key];
+          return {
+            crop,
+            prob: item.prob || 0,
+            yield: "-",
+            profit: profit !== undefined ? profit : undefined,
+            sustainability: "-",
+          } as Recommendation;
+        });
 
       setRecommendations(recs);
       await fetchHistory();

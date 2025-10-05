@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { NavBar } from "./NavBar";
 import VoiceAssistantButton from "./VoiceAssistantButton";
 
 const Layout = () => {
+  const { isAuthenticated, loading } = useAuth();
   return (
     <div>
       <NavBar />
       <main>
-        {/* The Outlet component renders the current page (e.g., Index, CropRecommender) */}
-        <Outlet />
+        {/* Render contents only after successful login */}
+        {!loading && isAuthenticated && <Outlet />}
       </main>
       <VoiceAssistantButton />
     </div>

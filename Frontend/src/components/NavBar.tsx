@@ -1,7 +1,7 @@
 import { Sprout, Settings, Activity, Leaf, Bot } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthModal } from "./auth/AuthModal";
 import VoiceAssistant from "./VoiceAssistant";
@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 export const NavBar = () => {
   const location = useLocation();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, loading, logout } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [voiceOpen, setVoiceOpen] = useState(false);
@@ -30,6 +30,14 @@ export const NavBar = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  // Auto-open auth modal when user is not authenticated on initial load
+  useEffect(() => {
+    if (!loading) {
+      if (!isAuthenticated) setAuthModalOpen(true);
+      else setAuthModalOpen(false);
+    }
+  }, [loading, isAuthenticated]);
 
   return (
     <>
