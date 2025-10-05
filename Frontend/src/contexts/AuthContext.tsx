@@ -43,8 +43,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Login failed');
+        let message = 'Login failed';
+        try {
+          const data = await response.json();
+          message = data?.error || message;
+        } catch {
+          message = response.statusText || message;
+        }
+        throw new Error(message);
       }
       
       setIsAuthenticated(true);
@@ -65,8 +71,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Registration failed');
+        let message = 'Registration failed';
+        try {
+          const data = await response.json();
+          message = data?.error || message;
+        } catch {
+          message = response.statusText || message;
+        }
+        throw new Error(message);
       }
       
       // Auto-login after registration
