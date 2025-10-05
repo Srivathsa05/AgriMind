@@ -2,51 +2,51 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-// Placeholder data for equipment
+// --- UPDATED: Image paths now point to your local 'public/images' folder ---
 const equipmentData = [
   {
     name: "Tractor",
-    image: "https://placehold.co/600x400/22c55e/ffffff?text=Tractor",
+    image: "../../public/assets/tractor.jpg", // Make sure you have tractor.jpg in public/images
     type: "Rental / Buy",
-    priceRent: "$150/day",
-    priceBuy: "$25,000",
+    priceRent: "₹1500/day",
+    priceBuy: "₹250000",
     description: "Heavy-duty tractor for plowing and tilling large fields.",
   },
   {
     name: "Combine Harvester",
-    image: "https://placehold.co/600x400/22c55e/ffffff?text=Harvester",
+    image: "../../public/assets/harvester.jpg", // Make sure you have harvester.jpg in public/images
     type: "Rental",
-    priceRent: "$300/day",
+    priceRent: "₹300/day",
     description: "Efficiently harvest crops like wheat, corn, and rice.",
   },
   {
     name: "Seed Drill",
-    image: "https://placehold.co/600x400/22c55e/ffffff?text=Seed+Drill",
+    image: "../../public/assets/seeddrill.jpeg", // Make sure you have seed-drill.jpg in public/images
     type: "Rental / Buy",
-    priceRent: "$80/day",
-    priceBuy: "$5,000",
+    priceRent: "₹80/day",
+    priceBuy: "₹5,000",
     description: "Automated seed planter for precise and uniform sowing.",
   },
   {
     name: "Irrigation Sprinkler",
-    image: "https://placehold.co/600x400/22c55e/ffffff?text=Sprinkler",
+    image: "../../public/assets/irrigation.jpeg", // Make sure you have sprinkler.jpg in public/images
     type: "Buy",
-    priceBuy: "$1,200",
+    priceBuy: "₹1,200",
     description: "Automated sprinkler system for efficient field irrigation.",
   },
   {
     name: "Pesticide Sprayer",
-    image: "https://placehold.co/600x400/22c55e/ffffff?text=Sprayer",
+    image: "../../public/assets/pesticide.jpeg", // Make sure you have sprayer.jpg in public/images
     type: "Rental",
-    priceRent: "$50/day",
+    priceRent: "₹50/day",
     description: "Portable sprayer for applying pesticides and fertilizers.",
   },
   {
     name: "Rotary Tiller",
-    image: "https://placehold.co/600x400/22c55e/ffffff?text=Tiller",
+    image: "../../public/assets/tiller.jpeg", // Make sure you have tiller.jpg in public/images
     type: "Rental / Buy",
-    priceRent: "$70/day",
-    priceBuy: "$2,500",
+    priceRent: "₹70/day",
+    priceBuy: "₹2,500",
     description: "Prepares the soil for planting by breaking up hard ground.",
   },
 ];

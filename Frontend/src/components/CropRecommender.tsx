@@ -96,7 +96,17 @@ const HowItWorksTooltip = () => (
   </div>
 );
 
-const FormInput = ({ name, value, onChange }: { name: string; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void }) => (
+const FormInput = ({
+  name,
+  value,
+  onChange,
+  placeholder
+}: {
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+}) => (
   <div>
     <label htmlFor={name} className="block text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">{name}</label>
     <input
@@ -105,7 +115,7 @@ const FormInput = ({ name, value, onChange }: { name: string; value: string; onC
       id={name}
       value={value}
       onChange={onChange}
-      placeholder={name}
+      placeholder={placeholder || name}
       className="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
       step="any"
       required
@@ -119,6 +129,7 @@ function CropRecommender() {
   const [formData, setFormData] = useState({
     N: '', P: '', K: '', pH: '',
     location: '', temperature: '', humidity: '', rainfall: '',
+    soil_moisture: '', sunlight_hours: '', farm_size: ''
   });
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [history, setHistory] = useState<any[]>([]);
@@ -144,7 +155,6 @@ function CropRecommender() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Validate all fields
     if (!formData.N || !formData.P || !formData.K || !formData.pH ||
         !formData.location || !formData.temperature || !formData.humidity || !formData.rainfall) {
       setError("⚠️ Please fill all fields before submitting.");
@@ -165,6 +175,9 @@ function CropRecommender() {
         temperature: parseFloat(formData.temperature),
         humidity: parseFloat(formData.humidity),
         rainfall: parseFloat(formData.rainfall),
+        soil_moisture: parseFloat(formData.soil_moisture),
+        sunlight_hours: parseFloat(formData.sunlight_hours),
+        farm_size: parseFloat(formData.farm_size)
       });
 
       const recs = (response.data || []).map((item: any) => ({
@@ -183,9 +196,24 @@ function CropRecommender() {
     }
   };
 
+  const placeholders: Record<string, string> = {
+    N: "Nitrogen (kg/ha)",
+    P: "Phosphorus (kg/ha)",
+    K: "Potassium (kg/ha)",
+    pH: "Soil pH",
+    temperature: "Temperature (°C)",
+    humidity: "Humidity (%)",
+    rainfall: "Rainfall (mm)",
+    soil_moisture: "Soil Moisture (%)",
+    sunlight_hours: "Sunlight Hours/day",
+    farm_size: "Farm Size (ha)",
+    location: "Farm Location"
+  };
+
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="pt-24 p-4 sm:p-6 lg:p-8"> {/* Added top padding to avoid nav overlap */}
       <header className="mb-6">
+        <br></br><br></br>
         <h1 className="text-3xl sm:text-4xl font-bold text-green-500">Agri-Assist</h1>
         <p className="text-gray-600 dark:text-gray-400">AI-Powered Crop Recommendations</p>
       </header>
@@ -194,24 +222,30 @@ function CropRecommender() {
         <div className="lg:col-span-1">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
+
+              {/* Soil Data */}
               <div>
                 <h3 className="text-lg font-semibold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Soil Data</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <FormInput name="N" value={formData.N} onChange={handleInputChange}/>
-                  <FormInput name="P" value={formData.P} onChange={handleInputChange}/>
-                  <FormInput name="K" value={formData.K} onChange={handleInputChange}/>
-                  <FormInput name="pH" value={formData.pH} onChange={handleInputChange}/>
+                  <FormInput name="N" value={formData.N} onChange={handleInputChange} placeholder={placeholders.N}/>
+                  <FormInput name="P" value={formData.P} onChange={handleInputChange} placeholder={placeholders.P}/>
+                  <FormInput name="K" value={formData.K} onChange={handleInputChange} placeholder={placeholders.K}/>
+                  <FormInput name="pH" value={formData.pH} onChange={handleInputChange} placeholder={placeholders.pH}/>
+                  <FormInput name="soil_moisture" value={formData.soil_moisture} onChange={handleInputChange} placeholder={placeholders.soil_moisture}/>
+                  <FormInput name="sunlight_hours" value={formData.sunlight_hours} onChange={handleInputChange} placeholder={placeholders.sunlight_hours}/>
+                  <FormInput name="farm_size" value={formData.farm_size} onChange={handleInputChange} placeholder={placeholders.farm_size}/>
                 </div>
               </div>
 
+              {/* Location & Weather Data */}
               <div>
                 <h3 className="text-lg font-semibold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Location & Weather Data</h3>
                 <div className="space-y-4">
-                  <FormInput name="location" value={formData.location} onChange={handleInputChange}/>
+                  <FormInput name="location" value={formData.location} onChange={handleInputChange} placeholder={placeholders.location}/>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <FormInput name="temperature" value={formData.temperature} onChange={handleInputChange}/>
-                    <FormInput name="humidity" value={formData.humidity} onChange={handleInputChange}/>
-                    <FormInput name="rainfall" value={formData.rainfall} onChange={handleInputChange}/>
+                    <FormInput name="temperature" value={formData.temperature} onChange={handleInputChange} placeholder={placeholders.temperature}/>
+                    <FormInput name="humidity" value={formData.humidity} onChange={handleInputChange} placeholder={placeholders.humidity}/>
+                    <FormInput name="rainfall" value={formData.rainfall} onChange={handleInputChange} placeholder={placeholders.rainfall}/>
                   </div>
                 </div>
               </div>
@@ -221,11 +255,14 @@ function CropRecommender() {
                   {loading ? 'Analyzing...' : 'Get Recommendation'}
                 </button>
               </div>
+
             </form>
           </div>
+
           <HistoryPanel history={history}/>
         </div>
 
+        {/* Recommendations */}
         <div className="lg:col-span-1">
           <h2 className="text-2xl font-semibold mb-4">Top 3 Recommendations</h2>
           {loading && <Loader />}

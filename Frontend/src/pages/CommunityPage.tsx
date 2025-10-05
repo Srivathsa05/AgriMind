@@ -87,7 +87,7 @@ const CommunityPage = () => {
               <a href={"https://youtu.be/HEyFQo9RUWQ?si=8n7O4u-GCu9Q7ncm"} key={index} target="_blank" rel="noopener noreferrer">
                 <Card className="overflow-hidden group cursor-pointer h-full">
                   <div className="relative">
-                    <img src={tutorial.thumbnail} alt={tutorial.title} className="w-full h-40 object-cover" />
+                    <img src={"../../public/assets/Micro-Irrigation-Fund.jpg"} alt={tutorial.title} className="w-full h-40 object-cover" />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <Video className="h-12 w-12 text-white" />
                     </div>
