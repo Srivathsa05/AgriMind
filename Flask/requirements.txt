@@ -13,3 +13,4 @@ pandas==2.2.2
 
 # Utilities (based on common Flask setup, e.g., CORS)
 Flask-CORS==4.0.1
+python-dotenv==1.0.1

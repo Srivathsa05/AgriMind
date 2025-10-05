@@ -1,9 +1,10 @@
-import { Sprout, Settings, Activity, Leaf } from "lucide-react";
+import { Sprout, Settings, Activity, Leaf, Bot } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthModal } from "./auth/AuthModal";
+import VoiceAssistant from "./VoiceAssistant";
 import { motion } from "framer-motion";
 
 export const NavBar = () => {
@@ -11,6 +12,7 @@ export const NavBar = () => {
   const { isAuthenticated, logout } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
+  const [voiceOpen, setVoiceOpen] = useState(false);
 
   const navLinks = [
     { to: "/crop-recommender", label: "Recommender", icon: Leaf },
@@ -84,35 +86,46 @@ export const NavBar = () => {
             ))}
           </nav>
 
-          {/* Auth Buttons */}
-          <div className="flex items-center gap-2 relative z-10">
-            {isAuthenticated ? (
-              <Button
-                variant="outline"
-                className="font-semibold hover:bg-red-50 hover:text-red-600 transition-colors"
-                onClick={logout}
-              >
-                Logout
-              </Button>
-            ) : (
-              <>
-                <Button
-                  variant="ghost"
-                  className="font-semibold hover:text-primary"
-                  onClick={() => handleAuthClick("login")}
-                >
-                  Login
-                </Button>
-                <Button
-                  variant="default"
-                  className="font-semibold bg-primary text-white hover:bg-primary/90"
-                  onClick={() => handleAuthClick("register")}
-                >
-                  Register
-                </Button>
-              </>
-            )}
-          </div>
+          {/* Voice + Auth Buttons */}
+<div className="flex items-center gap-6 relative z-10">
+  <Button
+    variant="ghost"
+    className="flex items-center gap-2 px-4 py-2 rounded-full font-medium text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-300"
+    aria-label="Open voice assistant"
+    onClick={() => setVoiceOpen(true)}
+  >
+    <Bot className="h-6 w-6" />
+    <span>AgriBot</span>
+  </Button>
+
+  {isAuthenticated ? (
+    <Button
+      variant="outline"
+      className="font-semibold hover:bg-red-50 hover:text-red-600 transition-colors"
+      onClick={logout}
+    >
+      Logout
+    </Button>
+  ) : (
+    <>
+      <Button
+        variant="ghost"
+        className="font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300"
+        onClick={() => handleAuthClick("login")}
+      >
+        Login
+      </Button>
+      <Button
+        variant="default"
+        className="font-semibold bg-primary text-white hover:bg-primary/90 transition-all duration-300"
+        onClick={() => handleAuthClick("register")}
+      >
+        Register
+      </Button>
+    </>
+  )}
+</div>
+
         </div>
       </header>
 
@@ -121,6 +134,8 @@ export const NavBar = () => {
         onClose={() => setAuthModalOpen(false)}
         initialTab={authMode}
       />
+
+      <VoiceAssistant open={voiceOpen} onOpenChange={setVoiceOpen} />
 
       {/* Extra Gooey CSS */}
       <style>{`
