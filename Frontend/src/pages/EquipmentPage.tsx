@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 const equipmentData = [
   {
     name: "Tractor",
-    image: "../../public/assets/tractor.jpg", // Make sure you have tractor.jpg in public/images
+    image: "https://magmedia.machines4u.com.au/wp-content/uploads/2017/02/26094110/r4d073222-5E-762x458.jpg",
     type: "Rental / Buy",
     priceRent: "₹1500/day",
     priceBuy: "₹250000",
@@ -14,14 +14,14 @@ const equipmentData = [
   },
   {
     name: "Combine Harvester",
-    image: "../../public/assets/harvester.jpg", // Make sure you have harvester.jpg in public/images
+    image: "https://www.mechanicalpower.net/wp-content/uploads/2023/05/Combine-Harvester.jpg",
     type: "Rental",
     priceRent: "₹300/day",
     description: "Efficiently harvest crops like wheat, corn, and rice.",
   },
   {
     name: "Seed Drill",
-    image: "../../public/assets/seeddrill.jpeg", // Make sure you have seed-drill.jpg in public/images
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcHEr-yv5jkRKIii7VxDz5P2RoAf8IzwL20HGvCsv57FYQD8N5ak5jZWWCY-qAJON2_6c&usqp=CAU",
     type: "Rental / Buy",
     priceRent: "₹80/day",
     priceBuy: "₹5,000",
@@ -29,22 +29,22 @@ const equipmentData = [
   },
   {
     name: "Irrigation Sprinkler",
-    image: "../../public/assets/irrigation.jpeg", // Make sure you have sprinkler.jpg in public/images
+    image: "https://www.shutterstock.com/shutterstock/videos/31570960/thumb/8.jpg?ip=x480",
     type: "Buy",
     priceBuy: "₹1,200",
     description: "Automated sprinkler system for efficient field irrigation.",
   },
   {
     name: "Pesticide Sprayer",
-    image: "../../public/assets/pesticide.jpeg", // Make sure you have sprayer.jpg in public/images
+    image: "https://media.istockphoto.com/id/468867687/photo/farmer-spraying-pesticide.jpg?s=612x612&w=0&k=20&c=AGcFwPIeR-U4DD1Jz5nyMWNOuccxoSXMYXvaqp3axu0=",
     type: "Rental",
     priceRent: "₹50/day",
     description: "Portable sprayer for applying pesticides and fertilizers.",
   },
   {
     name: "Rotary Tiller",
-    image: "../../public/assets/tiller.jpeg", // Make sure you have tiller.jpg in public/images
-    type: "Rental / Buy",
+    image: "https://www.goodworkstractors.com/wp-content/uploads/2020/11/Rhino-Rebel-Rotary-Tiller-02.jpg ",  
+      type: "Rental / Buy",
     priceRent: "₹70/day",
     priceBuy: "₹2,500",
     description: "Prepares the soil for planting by breaking up hard ground.",
