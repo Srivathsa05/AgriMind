@@ -1,6 +1,5 @@
 # AgroAdvisor AI: AI-Powered Crop Recommendation System
 
-![Project Banner](https://via.placeholder.com/1200x300.png?text=AgroAdvisor+AI)
 An AI-driven web application that provides farmers with personalized crop recommendations. By integrating real-time data on soil properties, weather forecasts, market trends, and crop rotation history, AgroAdvisor AI aims to boost yield, increase profitability, and promote sustainable agricultural practices.
 
 ---
