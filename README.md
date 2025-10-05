@@ -59,14 +59,14 @@ This project is built using a modern technology stack:
 
 -   **Frontend**: HTML, CSS, JavaScript (You can specify frameworks like **React.js, Vue.js, or Angular**)
 -   **Backend**: Python (Using frameworks like **Flask** or **Django**)
--   **Database**: PostgreSQL / MySQL / MongoDB (Choose what you use)
+-   **Database**: PostgreSQL / MySQL / MongoDB 
 -   **Machine Learning**: Scikit-learn, TensorFlow, PyTorch, Pandas, NumPy
 -   **APIs & Data Sources**:
     -   Soil Grids API
     -   ISRO's Bhuvan API
     -   OpenWeatherMap API
     -   Government Agri-Market Portals (via scraping or official APIs)
--   **Deployment**: Docker, AWS, Heroku, Google Cloud (Choose what you use)
+-   **Deployment**: Docker, AWS, Heroku, Google Cloud 
 
 ## 🚀 Getting Started
 
